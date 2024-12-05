@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Welcome to The User Dashboard</h1>
+    <h1 class="text-center mb-5">Hello Mr. {{user.first_name}} {{user.last_name}}</h1>
+    
+    <div class="row">
+        <!-- First Card -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-1">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Profile Actions</h3>
+                    <p class="card-text text-muted">Manage your profile and settings.</p>
+                    <div class="d-flex justify-content-center align-items-center gap-4 mb-3">
+                        <a href="{% url 'edit_profile' %}" class="btn btn-primary">Edit Profile</a>
+                        <a href="{% url 'password_change' %}" class="btn btn-outline-primary">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Card -->
+        <div class="col-md-6">
+            <div class="card shadow-sm border-1">
+                <div class="card-body text-center">
+                    <h3 class="card-title">Adding Brand/Cars</h3>
+                    <p class="card-text text-muted">View your recent activity and usage history.</p>
+                    <div class="d-flex justify-content-center align-items-center gap-4 mb-3">
+                        <a href="{% url 'addCar' %}" class="btn btn-success">Add Car</a>
+                        <a href="{% url 'addBrand' %}" class="btn btn-outline-success">Add Brand</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <h3 class="mb-4 text-center">Purchased Cars</h3>
+    <div class="row">
+        {% for buy in request.user.buynow.all %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <img src="{{ buy.car.image.url }}" class="card-img-top" alt="{{ car.name }}" style="object-fit: cover; height: 200px;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ buy.car.name }}</h5>
+                        <p>Price :${{ buy.car.price }}</p>
+                        <p>Brand :{{ buy.car.brand }}</p>
+                        <p class="card-text">{{ buy.car.description|truncatewords:15 }}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Purchased on: {{ buy.created_at |date:"F d, Y" }}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">You haven't purchased any products yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

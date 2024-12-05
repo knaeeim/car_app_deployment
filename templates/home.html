@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="text-center mt-2">Welcome to World's Number One Car Selling Website</h1>
+<div class="d-flex align-content-center">
+    <div class="mt-5 w-50">
+        <img class="w-100"src="{% static '../media/images/118048-removebg-preview.png' %}" alt="">
+    </div>
+    <div class="text-center w-50 d-flex justify-content-center align-content-center flex-column">
+        <h1 class="p-3">Are you looking for best Car deal?</h1>
+        <h3 class="p-3">We are here for you!!</h3>
+        <h3 class="p-3">find the best deal for you!!</h3>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center flex-wrap my-">
+    {% for ba in brand %}
+        <div class="text-center m-2">
+            <img src="{{ ba.image.url }}" alt="{{ ba.name }}" class="rounded-circle img-fluid" style="width: 100px; height: 100px; object-fit: cover;" />
+            <div><a class="text-decoration-none text-dark" href="{% url 'bybrand' ba.id %}">{{ ba.name }}</a></div>
+        </div>
+    {% endfor %}
+</div>
+
+<h3 class="py-4 text-center">Total Cars found : {{ cars.count }}</h3>
+<div class="pt-4 mx-5 d-flex justify-content-center align-items-center flex-wrap gap-5 mb-5">
+
+    {% for car in cars %}
+    <div class="card" style="width: 18rem; min-height: 26rem;">
+        <img src="{{ car.image.url }}" class="card-img-top" alt="{{ car.name }}">
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">Model: {{ car.name }}</h5>
+          <p><strong>Brand:</strong> {{ car.brand }}</p>
+          <p><strong>Price:</strong> ${{ car.price }}</p>
+          <p class="card-text">{{ car.description|truncatewords:10 }}</p>
+          <a href="{% url 'show_details' car.id %}" class="btn btn-primary mt-auto">View Details</a>
+        </div>
+      </div>
+    {% endfor %}
+</div>
+{% endblock %}
